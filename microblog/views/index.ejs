@@ -1,0 +1,34 @@
+<%- include header %>
+   <% if(!user){%>
+   <div class="hero-unit">
+      <h1>欢迎来到MictoBlog</h1>
+	  <p>这是一个Node.js的微博系统</p>
+	  <p>
+	   <a class="btn btn-primary btn-large" href="/login">登陆</a>
+	   <a class="btn btn-large" href="/reg">注册</a>	   
+	  </p>
+   </div>
+  <% } else { %> 
+     <%- include say %>
+ <%}%>	   
+   
+ <%- include posts %>
+ 
+   <div class="row">
+     <div class="span4">
+	   <h2>Carbo 说</h2>
+	   <p>东风破早梅 向暖一支开 冰雪无人见 春从天上来</p>
+	 </div>
+	 
+	 <div class="span4">
+	   <h2>Licy 说</h2>
+	   <p>静态视图助手指的是该视图变量、方法与请求无关，一般指的是项目的名称、地址等配置参数或者是公共的方法，这些变量、方法只能用在模板视图里面，如果想在项目其他地方使用公共的变量、方法可以在global下新增全局变量、方法（参考：nodejs学习9：express本地、响应全局变量）</p>
+	 </div>
+	 
+	 <div class="span4">
+	   <h2>张三 说</h2>
+	   <p>上海通用东岳（烟台）：一个纯粹的代工基地，适合机械材料的去，待遇在当地不错了，本科3500，研究生多三四百，一年最少14个月工资。这个可能不多，关键是效益好的时候就发双薪，去年听说发了20个月工资。算下来每个月平均6，7千也差不多，山东人民可以考虑一下，据说每年招很多人，刚去的都在一线。</p>
+	 </div>
+   </div>
+<%- include footer %>	
+	
