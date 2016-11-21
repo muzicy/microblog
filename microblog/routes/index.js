@@ -1,25 +1,25 @@
 var crypto = require('crypto'),
     User = require('../models/user.js'),
-	Post = require("../models/post.js");
+	Post = require('../models/post.js');
 
 module.exports = function(app){
 	
-  app.get("/",function(req,res){
+  app.get('/',function(req,res){
 	  Post.get(null,function(err,posts){
 		if(err){
 		  posts=[];	
 		}  
-		res.render("index",{title:"首页",posts:posts}); 
+		res.render('index',{title:'首页',posts:posts}); 
 	  }) 
   })
-  app.get("/reg",checkNotLogin);
+  app.get('/reg',checkNotLogin);
   app.get('/reg',function(req,res){
-	 res.render('reg',{title:"用户注册"});  
+	 res.render('reg',{title:'用户注册'});  
   });
-  app.post("/reg",checkNotLogin);
-  app.post("/reg",function(req,res){
+  app.post('/reg',checkNotLogin);
+  app.post('/reg',function(req,res){
 	  if(req.body['password'].length<6||req.body['password-repeat'].length<6){
-		  req.flash("error","设置的密码长度小于6位，请重新设置");
+		  req.flash('error','设置的密码长度小于6位，请重新设置');
 		  return res.redirect('/reg');  
 	  }
 	  if(req.body['password-repeat']!=req.body['password']) {
@@ -37,11 +37,11 @@ module.exports = function(app){
 	  
 	  User.get(newUser.name,function(err,user){
 		if(user){
-		   err="user has already exists.";
+		   err='user has already exists.';
 		}
 		if(err){
-		  req.flash("error",err);
-		  return res.redirect("/reg");	
+		  req.flash('error',err);
+		  return res.redirect('/reg');	
 		}  
 		newUser.save(function(err){
 	     if(err){
@@ -50,52 +50,52 @@ module.exports = function(app){
 		 }
 		 req.session.user=newUser;
 		 req.flash('success','注册成功');
-		 res.redirect("/");		
+		 res.redirect('/');		
 		})
 	  })
   });
-  app.get("/login",checkNotLogin);
-  app.get("/login",function(req,res){
-	 res.render("login",{title:"用户登入"});  
+  app.get('/login',checkNotLogin);
+  app.get('/login',function(req,res){
+	 res.render('login',{title:'用户登入'});  
   });
-  app.post("/login",checkNotLogin);
-  app.post("/login",function(req,res){
-	 var md5 = crypto.createHash("md5");
-	 var password = md5.update(req.body.password).digest("base64");
+  app.post('/login',checkNotLogin);
+  app.post('/login',function(req,res){
+	 var md5 = crypto.createHash('md5');
+	 var password = md5.update(req.body.password).digest('base64');
 	 
 	 User.get(req.body.username,function(err,user){
 	 if(!user){
-	   req.flash("error","用户不存在");
-	   return res.redirect("/login");	 
+	   req.flash('error','用户不存在');
+	   return res.redirect('/login');	 
 	 }	 
 	 if(user.password!=password){
-	   req.flash("error","用户密码错误");
-	   return res.redirect("/login");	 
+	   req.flash('error','用户密码错误');
+	   return res.redirect('/login');	 
 	 }
 	 req.session.user=user;
-	 req.flash("success","登入成功");
-	 res.redirect("/")
+	 req.flash('success','登入成功');
+	 res.redirect('/')
 	 }) 
   });
-  app.get("/logout",checkLogin);
-  app.get("/logout",function(req,res){
+  app.get('/logout',checkLogin);
+  app.get('/logout',function(req,res){
 	 req.session.user=null;
-	 req.flash("success","登出成功");
-	 res.redirect("/"); 
+	 req.flash('success','登出成功');
+	 res.redirect('/'); 
   })
   
-  app.get("/u/:user",function(req,res){
+  app.get('/u/:user',function(req,res){
 	User.get(req.params.user,function(err,user){
 	  if(!user){
-		req.flash("error","用户不存在");
-		return res.redirect("/");  
+		req.flash('error','用户不存在');
+		return res.redirect('/');  
 	  }	
 	  Post.get(user.name,function(err,posts){
 		if(err){
-		  req.flash("error".err);
-		  return res.redirect("/");	
+		  req.flash('error'.err);
+		  return res.redirect('/');	
 		}  
-		res.render("user",{
+		res.render('user',{
 		  title:user.name,
 		  posts:posts	
 		})
@@ -119,16 +119,16 @@ module.exports = function(app){
 
 function checkLogin(req,res,next){
   if(!req.session.user){
-	req.flash("error","未登入");
-	return res.redirect("/login");  
+	req.flash('error','未登入');
+	return res.redirect('/login');  
   }
   next();
 }
 
 function checkNotLogin(req,res,next){
   if(req.session.user){
-	req.flash("error","已登入");
-	return res.redirect("/");  
+	req.flash('error','已登入');
+	return res.redirect('/');  
   }	
   next();
 }
